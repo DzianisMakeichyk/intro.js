@@ -2,14 +2,9 @@ import router from '@/router'
 import introJs from 'intro.js'
 const intro = {
   install (Vue) {
-    console.log(Vue)
-    Vue.myGlobalMethod = function () {
-      console.log('hello')
-    }
     Vue.mixin({
       mounted () {
         /* eslint-disable */
-        console.log(this.$store.state.introJsGoTo)
         introJs().setOption('doneLabel', 'Next page').oncomplete(() => {
           router.push({ path: this.$store.state.introJsGoTo })
         }).onafterchange((el) => {
@@ -17,15 +12,17 @@ const intro = {
         }).start();
       },
       methods: {
-        introGoTo: (step) => {
+        introGoTo (step) {
           return introJs().goToStepNumber(step).onafterchange((el) => {
+            el.classList.contains('video_intro') ? this.videoInit() : ''
+          }).setOption('doneLabel', 'Next page').oncomplete(() => {
+            router.push({ path: this.$store.state.introJsGoTo })
+          }).onafterchange((el) => {
             el.classList.contains('video_intro') ? this.videoInit() : ''
           }).start();
         },
-        introGoPage: (page) => {
-          console.log(this.$router)
+        introGoPage (page) {
           this.$router.push({ name: page })
-          console.log(page)
         },
         textWrapper: (val) => {
           return `<i> ${val} </i>`
