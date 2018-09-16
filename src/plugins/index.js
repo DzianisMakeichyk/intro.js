@@ -22,7 +22,11 @@ const intro = {
             el.classList.contains('video_intro') ? this.videoInit() : ''
           }).start();
         },
-        // Start again and Go to home page
+        introGoPage: (page) => {
+          console.log(this.$router)
+          this.$router.push({ name: page })
+          console.log(page)
+        },
         textWrapper: (val) => {
           return `<i> ${val} </i>`
         },

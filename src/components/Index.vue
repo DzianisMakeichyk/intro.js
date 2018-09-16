@@ -1,7 +1,7 @@
 <template>
     <div>
         <img alt="Vue logo" src="../assets/logo.png" :data-intro=textWrapper(text) />
-        <div :data-intro=myGlobalMethod() data-step="2" class="video_intro">
+        <div :data-intro=videoWrapper(video) data-step="2" class="video_intro">
             <h1>
                 Video
             </h1>

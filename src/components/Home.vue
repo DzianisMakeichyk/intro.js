@@ -7,6 +7,9 @@
     <div class="container">
       <button @click="introGoTo(1)">Start again</button>
     </div>
+    <div class="container">
+      <button @click="introGoPage('home')">Go Home start one</button>
+    </div>
   </div>
 </template>
 
