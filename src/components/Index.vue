@@ -1,119 +1,37 @@
 <template>
     <div>
-        <img alt="Vue logo" src="../assets/logo.png" :data-intro=textWrapper(text) >
-        <div :data-intro=videoWrapper(video) class="video_intro">
+        <img alt="Vue logo" src="../assets/logo.png" :data-intro=textWrapper(text) />
+        <div :data-intro=myGlobalMethod() data-step="2" class="video_intro">
             <h1>
                 Video
             </h1>
+        </div>
+        <div :data-intro=videoWrapper(video) class="video_intro">
+            <h1>
+                Video 2
+            </h1>
+        </div>
+        <div class="container">
+            <button @click="introGoTo(1)">Start again</button>
+        </div>
+        <div class="container">
+            <button @click="introGoTo(2)">Start from 2</button>
         </div>
     </div>
 </template>
 
 <script>
-// Imports
-import introJs from 'intro.js'
-import router from '../router'
-
 export default {
   name: 'app',
   data () {
     return {
       text: 'Hello step one!',
-      video: '//clips.vorwaerts-gmbh.de/VfE_html5.mp4'
-    }
-  },
-  methods: {
-    textWrapper (text) {
-      return `<i>${text}</i>`
-    },
-    videoWrapper (link) {
-      return `<div class="player">
-     <video class="player__video viewer" src="${link}"></video>
-
-     <div class="player__controls">
-       <div class="progress">
-        <div class="progress__filled"></div>
-       </div>
-       <button class="player__button toggle" title="Toggle Play">►</button>
-       <input type="range" name="volume" class="player__slider" min="0" max="1" step="0.05" value="1">
-       <input type="range" name="playbackRate" class="player__slider" min="0.5" max="2" step="0.1" value="1">
-       <button data-skip="-10" class="player__button">« 10s</button>
-       <button data-skip="25" class="player__button">25s »</button>
-     </div>
-   </div>`
-    },
-    videoInit () {
-    /* eslint-disable */
-    setTimeout(function () {
-
-
-        const player = document.querySelector('.player')
-        const video = player.querySelector('.viewer')
-
-        const progress = player.querySelector('.progress')
-        const progressBar = player.querySelector('.progress__filled')
-        const toggle = player.querySelector('.toggle')
-        const skipButtons = player.querySelectorAll('[data-skip]');
-        const ranges = player.querySelectorAll('.player__slider')
-
-        function togglePlay () {
-            const method = video.paused ? 'play' : 'pause';
-            video[method]()
-        }
-
-        function updateButton() {
-            const icons = this.paused ? '1' : '2'
-            toggle.textContent = icons
-        }
-
-        function skip() {
-            video.currentTime += parseFloat(this.dataset.skip);
-        }
-
-        function handleRangeUpdate() {
-            video[this.name] = this.value;
-        }
-
-        function handelProgress() {
-            const percent = (video.currentTime / video.duration) * 100;
-            progressBar.style.flexBasis = `${percent}%`
-        }
-
-        function scrub(e) {
-            console.log(e)
-            const scrubTime = (e.offsetX / progress.offsetWidth) * video.duration;
-            video.currentTime = scrubTime;
-        }
-
-        video.addEventListener('click', togglePlay)
-        video.addEventListener('play', updateButton)
-        video.addEventListener('pause', updateButton)
-        video.addEventListener('timeupdate', handelProgress)
-
-        toggle.addEventListener('click', togglePlay)
-
-        skipButtons.forEach(button => button.addEventListener('click', skip));
-
-        ranges.forEach(range => range.addEventListener('change', handleRangeUpdate));
-        ranges.forEach(range => range.addEventListener('mousemove', handleRangeUpdate));
-
-
-        progressBar.addEventListener('click', scrub)
-    }, 500)
+      video: '//clips.vorwaerts-gmbh.de/VfE_html5.mp4',
+      goTo: '/home'
     }
   },
   mounted () {
-    /* eslint-disable */
-    introJs().setOption('doneLabel', 'Next page').oncomplete(() => {
-        router.push({ path: '/home' })
-    }).onafterchange((el) => {
-        el.classList.contains('video_intro') ? this.videoInit() : ''
-    }).start();
- },
-  computed: {
-    player() {
-
-    }
+    this.$store.commit('mutationGoTo', this.goTo)
   }
 }
 </script>
@@ -264,4 +182,62 @@ export default {
         background: #ffc600;
         cursor: pointer;
     }
+
+    * {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .container {
+        margin: 25px auto;
+        width: 130px;
+        height: 40px;
+        text-align: center;
+    }
+
+    button {
+        outline: none;
+        height: 40px;
+        text-align: center;
+        width: 130px;
+        border-radius: 40px;
+        background: #fff;
+        border: 2px solid #1ECD97;
+        color: #1ECD97;
+        letter-spacing: 1px;
+        text-shadow: 0;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.25s ease;
+    }
+    button:hover {
+        color: white;
+        background: #1ECD97;
+    }
+    button:active {
+        letter-spacing: 2px;
+    }
+
+    @-webkit-keyframes rotating {
+        from {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        to {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes rotating {
+        from {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        to {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+
 </style>

@@ -4,26 +4,18 @@
     <h1>
       Hello
     </h1>
+    <div class="container">
+      <button @click="introGoTo(1)">Start again</button>
+    </div>
   </div>
 </template>
 
 <script>
-// Imports
-import introJS from 'intro.js'
-
 export default {
   name: 'app',
   data () {
     return {
       text: 'Hello step two!'
-    }
-  },
-  mounted () {
-    introJS().start()
-  },
-  methods: {
-    textWrapper (text) {
-      return `<i>${text}</i>`
     }
   }
 }
